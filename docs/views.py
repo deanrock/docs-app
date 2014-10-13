@@ -4,7 +4,7 @@ from django.core.urlresolvers import reverse
 from django.http.response import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from docs.models import Project, get_url, Page, Version
-
+from externals.restdown import restdown_path
 
 @login_required
 def view(request, project_url, page_url):
@@ -22,10 +22,15 @@ def view(request, project_url, page_url):
             'page_url': page.url
         }))
 
+    content = version.content
+
+    content, json = restdown_path(content)
+
     return render(request, 'view.html', {
         "project": project,
         "page": page,
         "version": version,
+        "content": content,
     })
 
 @login_required
@@ -41,6 +46,10 @@ def edit(request, project_url, page_url):
         content = request.POST.get('content')
 
         if content and len(content) >= 3:
+            #try to render before saving
+            #better to crash before save than when serving page!
+            _, _ = restdown_path(content)
+
             version = Version()
             version.added_at = datetime.datetime.now()
             version.added_by = request.user

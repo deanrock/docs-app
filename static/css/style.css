@@ -2,6 +2,11 @@
     float:right;
 }
 
+#header h1 a {
+color:white;
+border-bottom:1px dashed white;
+}
+
 .rightmenu li {
 float:left;
 list-style:none;
@@ -12,4 +17,22 @@ margin-right:20px;
 color: white;
 font-size:13px;
 line-height:50px;
+}
+
+ body {
+        overflow: hidden;
+    }
+
+    #editor {
+        margin: 0;left:0px;right:0px;
+	top:64px;
+	bottom:0px;position: absolute;
+    }
+
+
+#editor_wrapper {
+	position: absolute;
+	left:0px;right:0px;
+	top:64px;
+	bottom:0px;
 }

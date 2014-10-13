@@ -1,15 +1,29 @@
 {% extends "layout.html" %}
 
 {% block content %}
-<div class="restdown">
-	<div id="content">
+<div id="editor_wrapper">
 		<form method="post">
-            {% csrf_token %}
-            Content:<br />
-            <textarea style="width:100%;min-height:500px" name="content">{% if version %}{{version.content}}{%endif%}</textarea>
+            {% csrf_token %}<br />
+            <div><input type="submit" value="Save" /></div>
             <br />
-            <input type="submit" />
+            <textarea name="content" id="txt" style="display:none">{% if version %}{{version.content}}{%endif%}</textarea>
+
+            <pre id="editor"></pre>
+            <br />
+            
 		</form>
-	</div>
 </div>
+<script src="/static/ace/ace.js" type="text/javascript" charset="utf-8"></script>
+<script>
+    var editor = ace.edit("editor");
+    editor.setTheme("ace/theme/chrome");
+    editor.setFontSize("14px")
+    editor.getSession().setMode("ace/mode/markdown");
+
+    var textarea = $('textarea[name="content"]').hide();
+editor.getSession().setValue(textarea.val());
+editor.getSession().on('change', function(){
+  textarea.val(editor.getSession().getValue());
+});
+</script>
 {% endblock %}
