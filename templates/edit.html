@@ -1,0 +1,15 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="restdown">
+	<div id="content">
+		<form method="post">
+            {% csrf_token %}
+            Content:<br />
+            <textarea style="width:100%;min-height:500px" name="content">{% if version %}{{version.content}}{%endif%}</textarea>
+            <br />
+            <input type="submit" />
+		</form>
+	</div>
+</div>
+{% endblock %}

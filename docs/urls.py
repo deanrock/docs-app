@@ -11,6 +11,8 @@ urlpatterns = patterns('',
     url(r'^sso/', include(sso_client.get_urls())),
     url(r'^$', 'docs.views.home', name='home'),
     url(r'^login$', 'docs.views.login', name='login'),
+    url(r'^(?P<project_url>.*)/(?P<page_url>.*)/edit/$', 'docs.views.edit', name='edit'),
+    url(r'^(?P<project_url>.*)/(?P<page_url>.*)/$', 'docs.views.view', name='view'),
     # Examples:
     # url(r'^$', 'docs.views.home', name='home'),
     # url(r'^blog/', include('blog.urls')),

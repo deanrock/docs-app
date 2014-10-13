@@ -9,45 +9,30 @@
 
     <title>docs tovarnaidej</title>
 
-    <!-- Bootstrap core CSS -->
-    <link href="/static/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap core CSS -->=
+      <link href="/static/css/restdown.css" rel="stylesheet">
     <link href="/static/css/style.css" rel="stylesheet">
   </head>
 
   <body>
 
-    <div class="container">
+<div id="header">
+    <h1>docs</h1>
 
-      <!-- Static navbar -->
-      <div class="navbar navbar-default" role="navigation">
-        <div class="container-fluid">
-          <div class="navbar-header">
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
-              <span class="sr-only">Toggle navigation</span>
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-            </button>
-            <a class="navbar-brand" href="/">docs</a>
-          </div>
-          <div class="navbar-collapse collapse">
-            <ul class="nav navbar-nav">
-            </ul>
-            <ul class="nav navbar-nav navbar-right">
-                {% if user.is_authenticated %}
+    <ul class="rightmenu">
+        {% if project and page %}
+            <li><a href="/{{project.url}}/{{page.url}}/edit/">Edit</a></li>
+        {% endif %}
+          {% if user.is_authenticated %}
               <li><a href="/">{{user.first_name}}</a></li>
               <li><a href="/logout/">Logout</a></li>
                 {% endif %}
-            </ul>
-          </div><!--/.nav-collapse -->
-        </div><!--/.container-fluid -->
-      </div>
+    </ul>
+</div>
 
 
      {% block content %}
      {% endblock %}
 
-
-    </div> <!-- /container -->
   </body>
 </html>

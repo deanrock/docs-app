@@ -1,0 +1,15 @@
+.rightmenu {
+    float:right;
+}
+
+.rightmenu li {
+float:left;
+list-style:none;
+margin-right:20px;
+}
+
+.rightmenu li a {
+color: white;
+font-size:13px;
+line-height:50px;
+}
