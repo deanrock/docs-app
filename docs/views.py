@@ -126,3 +126,8 @@ def login(request):
     if request.method == 'POST':
         return HttpResponseRedirect(reverse('simple-sso-login'))
     return render(request, 'login.html')
+
+@login_required
+def logout(request):
+    logout(request)
+    return HttpResponseRedirect(reverse('home'))
