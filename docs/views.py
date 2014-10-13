@@ -1,5 +1,6 @@
 import datetime
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth import logout as logout_user
 from django.core.urlresolvers import reverse
 from django.http.response import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
@@ -129,5 +130,5 @@ def login(request):
 
 @login_required
 def logout(request):
-    logout(request)
+    logout_user(request)
     return HttpResponseRedirect(reverse('home'))
