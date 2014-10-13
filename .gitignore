@@ -1,0 +1,8 @@
+*.pyc
+env/
+.vagrant
+.DS_Store
+__pycache__
+db.sqlite3
+.idea/
+deployment/hosts.*
