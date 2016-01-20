@@ -2,10 +2,11 @@ import datetime
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout as logout_user
 from django.core.urlresolvers import reverse
-from django.http.response import HttpResponse, HttpResponseRedirect
+from django.http.response import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import render
 from docs.models import Project, get_url, Page, Version
 from externals.restdown import restdown_path
+
 
 @login_required
 def view(request, project_url, page_url):
@@ -33,6 +34,7 @@ def view(request, project_url, page_url):
         "version": version,
         "content": content,
     })
+
 
 @login_required
 def edit(request, project_url, page_url):
@@ -68,6 +70,17 @@ def edit(request, project_url, page_url):
         "page": page,
         "version": version,
     })
+
+
+@login_required
+def preview(request):
+    if request.method == 'POST' and 'content' in request.POST:
+        content, _ = restdown_path(request.POST['content'])
+
+        return JsonResponse({'content': content})
+    else:
+        return HttpResponse(status=400)
+
 
 @login_required
 def home(request):
@@ -123,10 +136,12 @@ def home(request):
         "projects": projects
     })
 
+
 def login(request):
     if request.method == 'POST':
         return HttpResponseRedirect(reverse('simple-sso-login'))
     return render(request, 'login.html')
+
 
 @login_required
 def logout(request):

@@ -9,21 +9,80 @@
             <textarea name="content" id="txt" style="display:none">{% if version %}{{version.content}}{%endif%}</textarea>
 
             <pre id="editor"></pre>
+            
+
             <br />
             
 		</form>
 </div>
+<div id="preview"><br /><br /><br />lol</div>
 <script src="/static/ace/ace.js" type="text/javascript" charset="utf-8"></script>
 <script>
-    var editor = ace.edit("editor");
-    editor.setTheme("ace/theme/chrome");
-    editor.setFontSize("14px")
-    editor.getSession().setMode("ace/mode/markdown");
+// using jQuery
+function getCookie(name) {
+    var cookieValue = null;
+    if (document.cookie && document.cookie != '') {
+        var cookies = document.cookie.split(';');
+        for (var i = 0; i < cookies.length; i++) {
+            var cookie = jQuery.trim(cookies[i]);
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+var csrftoken = getCookie('csrftoken');
 
-    var textarea = $('textarea[name="content"]').hide();
+function csrfSafeMethod(method) {
+    // these HTTP methods do not require CSRF protection
+    return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+}
+$.ajaxSetup({
+    beforeSend: function(xhr, settings) {
+        if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+            xhr.setRequestHeader("X-CSRFToken", csrftoken);
+        }
+    }
+});
+
+var waitingForReload = false;
+
+function loadPreview() {
+    $.ajax({
+        type: "POST",
+        url: "/preview/",
+        data: {"content": editor.getSession().getValue()},
+        success: function(data) {
+            waitingForReload = false;
+            var p = $('#preview #content');
+            var pos = p.scrollTop();
+            $('#preview').css('height',$("#preview").height()+'px');
+            $('#preview').html(data.content).promise().done(function(){
+                $('#preview #content').scrollTop(pos);
+            });
+            $('#preview').css('height','auto');
+        }
+    });
+}
+
+var editor = ace.edit("editor");
+editor.setTheme("ace/theme/chrome");
+editor.setFontSize("14px")
+editor.getSession().setMode("ace/mode/markdown");
+
+var textarea = $('textarea[name="content"]').hide();
 editor.getSession().setValue(textarea.val());
 editor.getSession().on('change', function(){
-  textarea.val(editor.getSession().getValue());
+    if (!waitingForReload) {
+        waitingForReload = true;
+        setTimeout(function() {
+            loadPreview();
+        }, 1000);
+    }
+    textarea.val(editor.getSession().getValue());
 });
 </script>
 {% endblock %}
