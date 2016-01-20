@@ -48,7 +48,7 @@ $.ajaxSetup({
     }
 });
 
-var waitingForReload = false;
+var waitingForReload = true;
 
 function loadPreview() {
     $.ajax({
@@ -75,6 +75,7 @@ editor.getSession().setMode("ace/mode/markdown");
 
 var textarea = $('textarea[name="content"]').hide();
 editor.getSession().setValue(textarea.val());
+loadPreview();
 editor.getSession().on('change', function(){
     if (!waitingForReload) {
         waitingForReload = true;
