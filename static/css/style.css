@@ -43,3 +43,17 @@ line-height:50px;
 	top:64px;
 	bottom:0px;
 }
+
+#reload-msg {
+	position: fixed;
+	top: 66px;
+	left: 0;
+	right: 0;
+	background: #b0424a;
+	color: #fff;
+	text-align: center;
+	font-size: 40px;
+	z-index: 1000;
+	padding: 20px 0;
+	display: none;
+}

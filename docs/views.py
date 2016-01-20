@@ -71,6 +71,17 @@ def edit(request, project_url, page_url):
         "version": version,
     })
 
+@login_required
+def get_last_version(request, project_url, page_url):
+    project = Project.objects.filter(url=project_url).first()
+    page = Page.objects.filter(url=page_url, project=project).first()
+
+    if not project or not page:
+        return HttpResponse(status=400)
+
+    version = Version.objects.filter(page=page).order_by('-id').first()
+
+    return JsonResponse({'version_id': version.id})
 
 @login_required
 def preview(request):

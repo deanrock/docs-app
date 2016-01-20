@@ -13,6 +13,7 @@ urlpatterns = patterns('',
     url(r'^login/$', 'docs.views.login', name='login'),
     url(r'^logout/$', 'docs.views.logout', name='logout'),
     url(r'^preview/$', 'docs.views.preview', name='preview'),
+    url(r'^(?P<project_url>.*)/(?P<page_url>.*)/last-version/$', 'docs.views.get_last_version', name='view'),
     url(r'^(?P<project_url>.*)/(?P<page_url>.*)/edit/$', 'docs.views.edit', name='edit'),
     url(r'^(?P<project_url>.*)/(?P<page_url>.*)/$', 'docs.views.view', name='view'),
     # Examples:

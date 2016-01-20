@@ -1,5 +1,32 @@
 {% extends "layout.html" %}
 
 {% block content %}
+	<div id="reload-msg">
+		New version of documentation is available!<br>
+		Please reload before you continue!
+	</div>
+	<div id="content-wrapper" data-version-id="{{ version.id }}">
 		{{content|safe}}
+	</div>
+{% endblock %}
+
+
+{% block script_block %}
+	<script>
+		jQuery(document).ready(function($) {
+			if($('#content-wrapper').length > 0) {
+				var current_version_id = parseInt(jQuery('#content-wrapper').attr('data-version-id'));
+
+				setInterval(function() {
+					$.get('{{ request.get_full_path }}last-version/', function(resp) {
+						if(typeof resp.version_id !== 'undefinded' && resp.version_id !== null) {
+							if(current_version_id != resp.version_id) {
+								$('#reload-msg').show();
+							}
+						}
+					});
+				}, 60 * 1000);
+			}
+		});
+	</script>
 {% endblock %}
