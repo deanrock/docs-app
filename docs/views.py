@@ -149,9 +149,7 @@ def home(request):
 
 
 def login(request):
-    if request.method == 'POST':
-        return HttpResponseRedirect(reverse('simple-sso-login'))
-    return render(request, 'login.html')
+    return HttpResponseRedirect(reverse('simple-sso-login'))
 
 
 @login_required
